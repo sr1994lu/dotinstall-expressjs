@@ -1,12 +1,16 @@
 const express = require('express');
+const logger = require('morgan');
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.use(logger('dev'));
+app.use(express.static('public'));
+app.use((req, res, next) => {
+  console.log('my custom middleware!');
+  next();
 });
 
-app.get('/about', (req, res) => {
-  res.send('About This Page!');
+app.get('/hello.txt', (req, res) => {
+  res.sendfile(require.resolve('./public/hello.txt'));
 });
 
 app.listen(3000, () => {
