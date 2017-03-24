@@ -2,17 +2,16 @@ const express = require('express');
 const logger = require('morgan');
 const app = express();
 
+app.set('views', './views');
+app.set('view engine', 'ejs');
+
 app.use(logger('dev'));
 app.use(express.static('public'));
-app.use((req, res, next) => {
-  console.log('my custom middleware!');
-  next();
+
+app.get('/', (req, res) => {
+  res.render('index', {title: 'title'});
 });
 
-app.get('/hello.txt', (req, res) => {
-  res.sendfile(require.resolve('./public/hello.txt'));
-});
-
-app.listen(3000, () => {
+app.listen(3030, () => {
   console.log('Server Starting...');
 });
