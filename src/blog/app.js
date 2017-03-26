@@ -22,9 +22,9 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(logger('dev'));
 
 app.get('/', post.index);
-app.get('/posts/:id', post.show);
+app.get('/posts/:id([0-9]+)', post.show);
+app.get('/posts/new', post.new);
 
-// app.get('/posts/new', post.new);
 // app.get('/posts/create', post.create);
 // app.get('/posts/:id/edit', post.edit);
 // app.get('/posts/:id/', post.destroy);
