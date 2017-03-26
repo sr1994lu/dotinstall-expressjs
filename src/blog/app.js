@@ -24,11 +24,11 @@ app.use(logger('dev'));
 app.get('/', post.index);
 app.get('/posts/:id([0-9]+)', post.show);
 app.get('/posts/new', post.new);
+app.post('/posts/create', post.create);
+app.get('/posts/:id/edit', post.edit);
 
-// app.get('/posts/create', post.create);
-// app.get('/posts/:id/edit', post.edit);
-// app.get('/posts/:id/', post.destroy);
-// app.delete('/posts/:id/', post.update);
+// app.delete('/posts/:id/', post.destroy);
+// app.put('/posts/:id/', post.update);
 
 app.listen(3030, () => {
   console.log('Server Starting...');
