@@ -4,48 +4,47 @@ let posts = [
   {title: 'title2', body: 'body2'},
 ];
 
-exports.index = (req, res) => {
-  res.render('posts/index', {posts: posts});
+exports.index = (request, response) => {
+  response.render('posts/index', {posts: posts});
 };
-exports.show = (req, res) => {
-  res.render('posts/show', {post: posts[req.params.id]});
+exports.show = (request, response) => {
+  response.render('posts/show', {post: posts[request.params.id]});
 };
-exports.new = (req, res) => {
-  res.render('posts/new');
+exports.new = (request, response) => {
+  response.render('posts/new');
 };
-exports.edit = (req, res) => {
-  res.render('posts/edit', {
-    post: posts[req.params.id],
-    id: req.params.id,
+exports.edit = (request, response) => {
+  response.render('posts/edit', {
+    post: posts[request.params.id],
+    id: request.params.id,
   });
 };
-exports.update = (req, res) => {
-  posts[req.body.id] = {
-    title: req.body.title,
-    body: req.body.body,
+exports.update = (request, response) => {
+  posts[request.body.id] = {
+    title: request.body.title,
+    body: request.body.body,
   };
-  res.redirect('/');
+  response.redirect('/');
 };
-exports.destroy = (req, res) => {
-  posts.splice(req.body.id, 1);
-  res.redirect('/');
+exports.destroy = (request, response) => {
+  posts.splice(request.body.id, 1);
+  response.redirect('/');
 };
-exports.create = (req, res) => {
+exports.create = (request, response) => {
   let post = {
-    title: req.body.title,
-    body: req.body.body,
+    title: request.body.title,
+    body: request.body.body,
   };
   posts.push(post);
-  res.redirect('/');
+  response.redirect('/');
 };
 
-exports.method = (req, res) => {
-  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+exports.method = (request, response) => {
+  if (request.body && typeof request.body
+      === 'object' && '_method' in request.body) {
     // look in urlencoded POST bodies and delete it
-    const method = req.body._method;
-    delete req.body._method;
+    const method = request.body._method;
+    delete request.body._method;
     return method;
   }
 };
-
-
