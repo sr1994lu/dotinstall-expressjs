@@ -19,16 +19,24 @@ exports.edit = (request, response) => {
     id: request.params.id,
   });
 };
-exports.update = (request, response) => {
-  posts[request.body.id] = {
-    title: request.body.title,
-    body: request.body.body,
-  };
-  response.redirect('/');
+exports.update = (request, response, next) => {
+  if (request.body.id === request.params.id) {
+    posts[request.body.id] = {
+      title: request.body.title,
+      body: request.body.body,
+    };
+    response.redirect('/');
+  } else {
+    next(new Error('ID not valid'));
+  }
 };
 exports.destroy = (request, response) => {
-  posts.splice(request.body.id, 1);
-  response.redirect('/');
+  if (request.body.id === request.params.id) {
+    posts.splice(request.body.id, 1);
+    response.redirect('/');
+  } else {
+    next(new Error('ID not valid'));
+  }
 };
 exports.create = (request, response) => {
   let post = {
@@ -47,4 +55,12 @@ exports.method = (request, response) => {
     delete request.body._method;
     return method;
   }
+};
+
+exports.error = (error, request, response, next) => {
+  if (error.code !== 'EBADCSRFTOKEN') return next(error);
+
+  // handle CSRF token errors here
+  response.status(403);
+  response.send('HTTP 403: Forbidden');
 };
