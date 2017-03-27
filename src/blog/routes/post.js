@@ -19,6 +19,17 @@ exports.edit = (req, res) => {
     id: req.params.id,
   });
 };
+exports.update = (req, res) => {
+  posts[req.body.id] = {
+    title: req.body.title,
+    body: req.body.body,
+  };
+  res.redirect('/');
+};
+exports.destroy = (req, res) => {
+  posts.splice(req.body.id, 1);
+  res.redirect('/');
+};
 exports.create = (req, res) => {
   let post = {
     title: req.body.title,
@@ -27,3 +38,14 @@ exports.create = (req, res) => {
   posts.push(post);
   res.redirect('/');
 };
+
+exports.method = (req, res) => {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    const method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+};
+
+

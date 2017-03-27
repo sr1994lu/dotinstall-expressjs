@@ -15,9 +15,8 @@ const upload = multer();
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
-
-// override with the X-HTTP-Method-Override header in the request
-app.use(methodOverride('X-HTTP-Method-Override'));
+// override with POST having _method= PUT or DELETE
+app.use(methodOverride(post.method));
 
 app.use(logger('dev'));
 
@@ -26,9 +25,8 @@ app.get('/posts/:id([0-9]+)', post.show);
 app.get('/posts/new', post.new);
 app.post('/posts/create', post.create);
 app.get('/posts/:id/edit', post.edit);
-
-// app.delete('/posts/:id/', post.destroy);
-// app.put('/posts/:id/', post.update);
+app.put('/posts/:id', post.update);
+app.delete('/posts/:id', post.destroy);
 
 app.listen(3030, () => {
   console.log('Server Starting...');
