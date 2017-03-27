@@ -38,11 +38,14 @@ app.use(session({
   saveUninitialized: true,
   cookie: {secure: true},
 }));
-app.use(csurf());
+app.use(csurf({cookie: true}));
 app.use((request, response, next) => {
   response.locals.csrfToken = request.csrfToken();
   next();
 });
+
+// if debug, Do comment out
+app.use(post.error);
 
 app.use(logger('dev'));
 
@@ -53,6 +56,12 @@ app.post('/posts/create', post.create);
 app.get('/posts/:id/edit', post.edit);
 app.put('/posts/:id', post.update);
 app.delete('/posts/:id', post.destroy);
+
+// if debug, Do comment out
+app.use((error, request, response, next) => {
+  console.error(error.stack);
+  response.status(500).send(error.message);
+});
 
 app.listen(3030, () => {
   console.log('Server Starting...');
